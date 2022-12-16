@@ -1,0 +1,24 @@
+.container {
+  display: flex;
+  justify-content: center;
+}
+
+.input {
+  width: 377px;
+  height: 60px;
+  padding-right: 12px;
+}
+
+.box {
+  display: flex;
+  justify-content: center;
+  margin-top: 146px;
+}
+
+.circle {
+  margin-right: 16px;
+}
+
+.button {
+  width: 178px;
+}

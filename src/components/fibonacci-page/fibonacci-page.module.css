@@ -1,0 +1,27 @@
+.container {
+  display: flex;
+  justify-content: center;
+}
+
+.input {
+  width: 377px;
+  height: 60px;
+  padding-right: 12px;
+}
+
+.box {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, 80px);
+  justify-content: center;
+  row-gap: 78px;
+  column-gap: 16px;
+  margin: auto;
+  margin-top: 74px;
+  margin-bottom: 86px;
+  max-width: 944px;
+}
+
+
+.button {
+  width: 178px;
+}
