@@ -4,72 +4,20 @@ import { Button } from "../ui/button/button";
 import { Input } from "../ui/input/input";
 import { Circle } from "../ui/circle/circle";
 import { ElementStates } from "../../types/element-states";
+import { queue } from "./Queue";
 import useForm from "../../hooks/use-form";
 import styles from "./queue-page.module.css";
-
-interface IQueue<T> {
-  enqueue: (item: T) => void;
-  dequeue: () => void;
-  peak: () => T | null;
-}
-
-class Queue<T> implements IQueue<T> {
-  private container: (T | null)[] = [];
-  public head = 0;
-  public tail = 0;
-  private readonly size: number = 0;
-  public length: number = 0;
-
-  constructor(size: number) {
-    this.size = size;
-    this.container = Array(size);
-  }
-
-  enqueue = (item: T) => {
-    if (this.length >= this.size) {
-      throw new Error("Maximum length exceeded");
-    }
-
-    this.container[this.tail % this.size] = item;
-    this.length++;
-    this.tail++;
-  };
-
-  dequeue = () => {
-    if (this.isEmpty()) {
-      throw new Error("No elements in the queue");
-    }
-
-    delete this.container[this.head % this.size];
-    this.head++;
-  };
-
-  peak = (): T | null => {
-    if (this.isEmpty()) {
-      throw new Error("No elements in the queue");
-    }
-    return this.container[this.head];
-  };
-
-  isEmpty = () => this.length === 0;
-
-  getElements = (): (T | null)[] => this.container;
-
-  delElements = (): void => {
-    this.container = Array(this.size);
-    this.head = 0;
-    this.tail = 0;
-    this.length = 0;
-  };
-}
-
-const queue = new Queue<string>(7);
 
 export const QueuePage: React.FC = () => {
   const { values, handleChange, setValues } = useForm({ value: "" });
   const [strArr, setStrArr] = useState<(string | null)[]>([]);
   const [state, setState] = useState(ElementStates.Default);
   const [action, setAction] = useState("");
+  const [isLoaded, setLoaded] = useState({
+    buttonA: false,
+    buttonB: false,
+    buttonC: false,
+  });
 
   useEffect(() => {
     setStrArr([...queue.getElements()]);
@@ -80,29 +28,36 @@ export const QueuePage: React.FC = () => {
   }, []);
 
   const handleClickPush = async (e: FormEvent<HTMLFormElement>) => {
+    setLoaded({ ...isLoaded, buttonA: true });
     e.preventDefault();
     setAction("push");
     await changeState();
     queue.enqueue(values.value);
     setStrArr([...queue.getElements()]);
     setValues({ value: "" });
+    setLoaded({ ...isLoaded, buttonA: false });
   };
 
   const handleClickPop = async () => {
+    setLoaded({ ...isLoaded, buttonB: true });
     setAction("");
     await changeState();
     queue.dequeue();
     setStrArr([...queue.getElements()]);
+    setLoaded({ ...isLoaded, buttonB: false });
   };
 
   const handleClickReset = () => {
+    setLoaded({ ...isLoaded, buttonC: true });
     queue.delElements();
     setStrArr([...queue.getElements()]);
     setValues({ value: "" });
+    setLoaded({ ...isLoaded, buttonC: false });
   };
 
-  const disableButton = values.value ? false : true;
-  const disableButtonDel = strArr.find((item) => item !== undefined)
+  const loaded = isLoaded.buttonA || isLoaded.buttonB || isLoaded.buttonC;
+  const disableButton = values.value && !loaded ? false : true;
+  const disableButtonDel = strArr.find((item) => item !== undefined) && !loaded
     ? false
     : true;
 
@@ -133,17 +88,21 @@ export const QueuePage: React.FC = () => {
           disabled={disableButton}
           extraClass={styles.button}
           type={"submit"}
+          isLoader={isLoaded.buttonA}
         />
         <Button
           text={"Удалить"}
           disabled={disableButtonDel}
           extraClass={styles.button}
           onClick={handleClickPop}
+          isLoader={isLoaded.buttonB}
         />
         <Button
           text={"Очистить"}
+          disabled={disableButtonDel}
           extraClass={`${styles.button} ${styles.button__reset}`}
           type={"reset"}
+          isLoader={isLoaded.buttonC}
         />
       </form>
       <div className={styles.box}>

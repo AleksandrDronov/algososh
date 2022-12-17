@@ -4,50 +4,15 @@ import { Button } from "../ui/button/button";
 import { Input } from "../ui/input/input";
 import { Circle } from "../ui/circle/circle";
 import { ElementStates } from "../../types/element-states";
+import { stack } from "./Stack";
 import useForm from "../../hooks/use-form";
 import styles from "./stack-page.module.css";
-
-interface IStack<T> {
-  getElements: () => T[];
-  push: (item: T) => void;
-  pop: () => void;
-  peak: () => T | null;
-  getSize: () => number;
-}
-
-class Stack<T> implements IStack<T> {
-  private container: T[] = [];
-
-  push = (item: T): void => {
-    this.container.push(item);
-  };
-
-  pop = (): void => {
-    this.container.pop();
-  };
-
-  peak = (): T | null => {
-    if (this.getSize()) {
-      return this.container[this.getSize() - 1];
-    }
-    return null;
-  };
-
-  getSize = () => this.container.length;
-
-  getElements = (): T[] => this.container;
-
-  delElements = (): void => {
-    this.container = [];
-  };
-}
-
-const stack = new Stack<string>();
 
 export const StackPage: React.FC = () => {
   const { values, handleChange, setValues } = useForm({ value: "" });
   const [strArr, setStrArr] = useState<string[]>([]);
   const [state, setState] = useState(ElementStates.Default);
+  const [isLoaded, setLoaded] = useState(false)
 
   useEffect(() => {
     return () => {
@@ -57,11 +22,13 @@ export const StackPage: React.FC = () => {
   }, []);
 
   const handleClickPush = (e: FormEvent<HTMLFormElement>) => {
+    setLoaded(true)
     e.preventDefault();
     stack.push(values.value);
     setStrArr([...stack.getElements()]);
     setValues({ value: "" });
     changeState();
+    setLoaded(false)
   };
 
   const handleClickPop = async () => {
@@ -99,13 +66,14 @@ export const StackPage: React.FC = () => {
           onChange={handleChange}
           value={values.value}
           placeholder={"Введите значение"}
-          name={'value'}
+          name={"value"}
         />
         <Button
           text={"Добавить"}
           disabled={disableButton}
           extraClass={styles.button}
           type={"submit"}
+          isLoader={isLoaded}
         />
         <Button
           text={"Удалить"}

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { SolutionLayout } from "../ui/solution-layout/solution-layout";
 import { RadioInput } from "../ui/radio-input/radio-input";
 import { Button } from "../ui/button/button";
@@ -29,6 +29,10 @@ export const SortingPage: React.FC = () => {
     setNumbers([...arr]);
   };
 
+  useEffect(() => {
+    randomArr()
+  }, [])
+  
   const selectionSort = async (directionSort: string) => {
     setLoaded(true);
     const arr: number[] = [...numbers];
@@ -52,7 +56,7 @@ export const SortingPage: React.FC = () => {
 
       [arr[i], arr[minInd]] = [arr[minInd], arr[i]];
       setNumbers([...arr]);
-      setInd((prev: any) => prev + 1);
+      setInd(i + 1);
     }
     setLoaded(false);
   };
@@ -90,29 +94,34 @@ export const SortingPage: React.FC = () => {
 
   const changeColumnSelect = (
     index: number,
-    ind: any,
+    ind: number | undefined,
     currInd: number | undefined
   ) => {
-    if (index === ind || index === currInd) {
-      return ElementStates.Changing;
-    } else if (index < ind) {
-      return ElementStates.Modified;
+    if(ind !== undefined) {
+      if (index === ind || index === currInd) {
+        return ElementStates.Changing;
+      } else if (index < ind) {
+        return ElementStates.Modified;
+      }
+      return ElementStates.Default;
     }
-    return ElementStates.Default;
+      
   };
 
   const changeColumnBubble = (
     index: number,
     ind: number | undefined,
     currInd: number | undefined,
-    lastInd: any
+    lastInd: number | undefined
   ) => {
-    if (index === ind || index === currInd) {
-      return ElementStates.Changing;
-    } else if (index > lastInd) {
-      return ElementStates.Modified;
+    if(lastInd) {
+      if (index === ind || index === currInd) {
+        return ElementStates.Changing;
+      } else if (index > lastInd) {
+        return ElementStates.Modified;
+      }
+      return ElementStates.Default;
     }
-    return ElementStates.Default;
   };
 
   const disableButton = numbers.length ? false : true;
