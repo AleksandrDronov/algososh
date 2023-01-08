@@ -4,6 +4,7 @@ import { Input } from "../ui/input/input";
 import { Button } from "../ui/button/button";
 import { Circle } from "../ui/circle/circle";
 import { ElementStates } from "../../types/element-states";
+import { stringReverse } from "./utils";
 import styles from "./string.module.css";
 import useForm from "../../hooks/use-form";
 
@@ -13,39 +14,14 @@ export const StringComponent: React.FC = () => {
   const [startEnd, setStartEnd] = useState<number[]>([]);
   const [isLoaded, setLoaded] = useState(false);
 
-  const stringReverse = async () => {
-    const strArr: string[] = values.value.split("");
+
+  const handleClick = async(e: FormEvent<HTMLFormElement>) => {
     setLoaded(true);
-    setStartEnd([]);
-    setString([...strArr]);
-
-    await new Promise<void>((resolve) => setTimeout(resolve, 500));
-
-    let startIndex = 0;
-    let endIndex = strArr.length - 1;
-
-    while (startIndex <= endIndex) {
-      setStartEnd([startIndex, endIndex]);
-      await new Promise<void>((resolve) => setTimeout(resolve, 1000));
-
-      [strArr[startIndex], strArr[endIndex]] = [
-        strArr[endIndex],
-        strArr[startIndex],
-      ];
-
-      startIndex++;
-      endIndex--;
-      setStartEnd([startIndex, endIndex]);
-      setString([...strArr]);
-    }
-
-    setLoaded(false);
-  };
-
-  const handleClick = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    stringReverse();
+    await stringReverse(values.value, 1000, setString, setStartEnd);
     setValues({ value: "" });
+    setLoaded(false);
+
   };
 
   const changeCircle = ([start, end]: number[], index: number) => {
@@ -59,7 +35,7 @@ export const StringComponent: React.FC = () => {
 
   return (
     <SolutionLayout title="Строка">
-      <form className={styles.container} onSubmit={handleClick}>
+      <form data-testid={'form'} className={styles.container} onSubmit={handleClick}>
         <Input
           maxLength={11}
           isLimitText={true}
@@ -67,6 +43,7 @@ export const StringComponent: React.FC = () => {
           onChange={handleChange}
           value={values.value}
           name={"value"}
+          data-testid={'input'}
         />
         <Button
           text={"Развернуть"}
@@ -76,7 +53,7 @@ export const StringComponent: React.FC = () => {
           extraClass={styles.button}
         />
       </form>
-      <div className={styles.box}>
+      <div className={styles.box} data-testid={'letters'}>
         {string.map((letter, index) => (
           <Circle
             letter={letter}

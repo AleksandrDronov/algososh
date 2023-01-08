@@ -176,6 +176,7 @@ export const ListPage: React.FC = () => {
           extraClass={styles.button}
           onClick={handleClickAppend}
           isLoader={isLoaded.buttonB}
+          data-testid={"addToTail"}
         />
         <Button
           text={"Удалить из head"}
@@ -183,6 +184,7 @@ export const ListPage: React.FC = () => {
           extraClass={styles.button}
           onClick={handleClickDeleteHead}
           isLoader={isLoaded.buttonC}
+          data-testid={"deleteFromHead"}
         />
         <Button
           text={"Удалить из tail"}
@@ -190,6 +192,8 @@ export const ListPage: React.FC = () => {
           disabled={disableButtonDel}
           onClick={handleClickDeleteTail}
           isLoader={isLoaded.buttonD}
+          data-testid={"deleteFromTail"}
+
         />
       </div>
       <div className={styles.container}>
@@ -208,6 +212,7 @@ export const ListPage: React.FC = () => {
           extraClass={styles.button__index}
           onClick={handleClickInsert}
           isLoader={isLoaded.buttonE}
+          data-testid={"addByIndex"}
         />
         <Button
           text={"Удалить по индексу"}
@@ -215,6 +220,8 @@ export const ListPage: React.FC = () => {
           extraClass={styles.button__index}
           onClick={handleClickDelete}
           isLoader={isLoaded.buttonF}
+          data-testid={"deleteByIndex"}
+
         />
       </div>
       <div className={styles.box}>

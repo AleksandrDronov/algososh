@@ -5,7 +5,9 @@ import { Button } from "../ui/button/button";
 import { Direction } from "../../types/direction";
 import { Column } from "../ui/column/column";
 import { ElementStates } from "../../types/element-states";
+import { selectionSort, bubbleSort } from "./utils";
 import styles from "./sorting-page.module.css";
+
 
 export const SortingPage: React.FC = () => {
   const [numbers, setNumbers] = useState<number[]>([]);
@@ -14,7 +16,7 @@ export const SortingPage: React.FC = () => {
   const [lastInd, setLastInd] = useState<number>();
   const [isLoaded, setLoaded] = useState(false);
   const [radioValue, setRadio] = useState<string>("selection");
-
+  
   const randomArr = () => {
     setInd(undefined);
     setCurrInd(undefined);
@@ -33,62 +35,16 @@ export const SortingPage: React.FC = () => {
     randomArr()
   }, [])
   
-  const selectionSort = async (directionSort: string) => {
+  const handleselectionSort = async(directionSort: "up" | "down") => {
     setLoaded(true);
-    const arr: number[] = [...numbers];
-    for (let i = 0; i < arr.length; i++) {
-      setInd(i);
-      let minInd = i;
-
-      for (let j = i + 1; j < arr.length + 1; j++) {
-        await new Promise<void>((resolve) => setTimeout(resolve, 500));
-        setCurrInd(j);
-        if (directionSort === "up") {
-          if (arr[j] < arr[minInd]) {
-            minInd = j;
-          }
-        } else {
-          if (arr[j] > arr[minInd]) {
-            minInd = j;
-          }
-        }
-      }
-
-      [arr[i], arr[minInd]] = [arr[minInd], arr[i]];
-      setNumbers([...arr]);
-      setInd(i + 1);
-    }
+    await selectionSort(numbers, directionSort, 500, setInd, setCurrInd, setNumbers);
     setLoaded(false);
   };
 
-  const bubbleSort = async (directionSort: string) => {
+  
+  const handlebubbleSort = async (directionSort: "up" | "down") => {
     setLoaded(true);
-    const arr: number[] = [...numbers];
-
-    for (let j = arr.length - 1; j >= -1; j--) {
-      setLastInd(j);
-
-      for (let i = 0; i < j; i++) {
-        await new Promise<void>((resolve) => setTimeout(resolve, 500));
-
-        setInd(i);
-        setCurrInd(i + 1);
-
-        if (directionSort === "up") {
-          if (arr[i] > arr[i + 1]) {
-            [arr[i], arr[i + 1]] = [arr[i + 1], arr[i]];
-          }
-        } else {
-          if (arr[i] < arr[i + 1]) {
-            [arr[i], arr[i + 1]] = [arr[i + 1], arr[i]];
-          }
-        }
-        setNumbers([...arr]);
-      }
-
-      setCurrInd(undefined);
-      setInd(undefined);
-    }
+    await bubbleSort(numbers, directionSort, 500, setInd, setCurrInd, setLastInd, setNumbers);
     setLoaded(false);
   };
 
@@ -149,7 +105,7 @@ export const SortingPage: React.FC = () => {
           text={"По возрастанию"}
           disabled={disableButton}
           onClick={() =>
-            radioValue === "selection" ? selectionSort("up") : bubbleSort("up")
+            radioValue === "selection" ? handleselectionSort("up") : handlebubbleSort("up")
           }
           isLoader={isLoaded}
           extraClass={`${styles.button__sort} ${styles.button}`}
@@ -161,8 +117,8 @@ export const SortingPage: React.FC = () => {
           isLoader={isLoaded}
           onClick={() =>
             radioValue === "selection"
-              ? selectionSort("down")
-              : bubbleSort("down")
+              ? handleselectionSort("down")
+              : handlebubbleSort("down")
           }
           extraClass={styles.button}
           sorting={Direction.Descending}
