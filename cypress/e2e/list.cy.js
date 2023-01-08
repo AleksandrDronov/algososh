@@ -1,4 +1,6 @@
 /* eslint-disable cypress/no-unnecessary-waiting */
+import { def, changing, modified } from "./constants";
+
 describe("page list works correctly", function () {
   beforeEach(function () {
     cy.visit("/list");
@@ -22,7 +24,7 @@ describe("page list works correctly", function () {
 
     cy.get("@allCircle").each(($el, index) => {
       expect($el).to.contain(arr[index]);
-      expect($el).to.have.css("border", "4px solid rgb(0, 50, 255)");
+      expect($el).to.have.css("border", def);
     });
 
     cy.get('[class^="list-page_box"]')
@@ -48,7 +50,7 @@ describe("page list works correctly", function () {
     cy.get("@allCircle")
       .first()
       .should("contain", "5")
-      .should("have.css", "border", "4px solid rgb(210, 82, 225)")
+      .should("have.css", "border", changing)
       .should("have.css", "width", "56px");
 
     cy.wait(1000);
@@ -56,13 +58,13 @@ describe("page list works correctly", function () {
     cy.get("@allCircle")
       .first()
       .should("contain", "5")
-      .should("have.css", "border", "4px solid rgb(127, 224, 81)");
+      .should("have.css", "border", modified);
 
     cy.wait(500);
 
     cy.get("@allCircle")
       .first()
-      .should("have.css", "border", "4px solid rgb(0, 50, 255)");
+      .should("have.css", "border", def);
 
     cy.get('[class^="list-page_box"]')
       .find('[class^="circle_content"]')
@@ -82,7 +84,7 @@ describe("page list works correctly", function () {
     cy.get("@allCircle")
       .eq(3)
       .should("contain", "5")
-      .should("have.css", "border", "4px solid rgb(210, 82, 225)")
+      .should("have.css", "border", changing)
       .should("have.css", "width", "56px");
 
     cy.wait(1000);
@@ -90,13 +92,13 @@ describe("page list works correctly", function () {
     cy.get("@allCircle")
       .last()
       .should("contain", "5")
-      .should("have.css", "border", "4px solid rgb(127, 224, 81)");
+      .should("have.css", "border", modified);
 
     cy.wait(500);
 
     cy.get("@allCircle")
       .last()
-      .should("have.css", "border", "4px solid rgb(0, 50, 255)");
+      .should("have.css", "border", def);
 
     cy.get('[class^="list-page_box"]')
       .find('[class^="circle_content"]')
@@ -120,12 +122,12 @@ describe("page list works correctly", function () {
       cy.get("@allCircle")
         .eq(i)
         .should("contain", "5")
-        .should("have.css", "border", "4px solid rgb(210, 82, 225)")
+        .should("have.css", "border", changing)
         .should("have.css", "width", "56px");
 
       cy.get("@allCircle")
         .eq(i + 1)
-        .should("have.css", "border", "4px solid rgb(210, 82, 225)");
+        .should("have.css", "border", changing);
     }
 
     cy.wait(1000);
@@ -133,14 +135,14 @@ describe("page list works correctly", function () {
     cy.get("@allCircle")
       .eq(2)
       .should("contain", "5")
-      .should("have.css", "border", "4px solid rgb(127, 224, 81)")
+      .should("have.css", "border", modified)
       .should("have.css", "width", "80px");
 
     cy.wait(500);
 
     cy.get("@allCircle")
       .eq(2)
-      .should("have.css", "border", "4px solid rgb(0, 50, 255)");
+      .should("have.css", "border", def);
   });
 
   it("should delete element from head", function () {
@@ -154,7 +156,7 @@ describe("page list works correctly", function () {
     cy.get("@allCircle")
       .eq(1)
       .should("contain", "0")
-      .should("have.css", "border", "4px solid rgb(210, 82, 225)")
+      .should("have.css", "border", changing)
       .should("have.css", "width", "56px");
 
     cy.wait(1000);
@@ -162,7 +164,7 @@ describe("page list works correctly", function () {
     cy.get("@allCircle")
       .first()
       .should("contain", "34")
-      .should("have.css", "border", "4px solid rgb(0, 50, 255)")
+      .should("have.css", "border", def)
       .should("have.css", "width", "80px");
 
     cy.get('[class^="list-page_box"]')
@@ -182,7 +184,7 @@ describe("page list works correctly", function () {
     cy.get("@allCircle")
       .last()
       .should("contain", "1")
-      .should("have.css", "border", "4px solid rgb(210, 82, 225)")
+      .should("have.css", "border", changing)
       .should("have.css", "width", "56px");
 
     cy.wait(1000);
@@ -190,7 +192,7 @@ describe("page list works correctly", function () {
     cy.get("@allCircle")
       .last()
       .should("contain", "8")
-      .should("have.css", "border", "4px solid rgb(0, 50, 255)")
+      .should("have.css", "border", def)
       .should("have.css", "width", "80px");
 
     cy.get('[class^="list-page_box"]')
@@ -213,7 +215,7 @@ describe("page list works correctly", function () {
 
       cy.get("@allCircle")
         .eq(i)
-        .should("have.css", "border", "4px solid rgb(210, 82, 225)")
+        .should("have.css", "border", changing)
         .should("have.css", "width", "80px");
     }
 
@@ -222,7 +224,7 @@ describe("page list works correctly", function () {
     cy.get("@allCircle")
       .eq(3)
       .should("contain", "8")
-      .should("have.css", "border", "4px solid rgb(210, 82, 225)")
+      .should("have.css", "border", changing)
       .should("have.css", "width", "56px");
 
     cy.wait(1000);
@@ -230,6 +232,6 @@ describe("page list works correctly", function () {
     cy.get("@allCircle")
       .eq(2)
       .should("contain", "1")
-      .should("have.css", "border", "4px solid rgb(0, 50, 255)");
+      .should("have.css", "border", def);
   });
 });

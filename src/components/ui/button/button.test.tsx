@@ -1,6 +1,7 @@
 import renderer from "react-test-renderer";
 import { render, screen, fireEvent } from "@testing-library/react";
 import { Button } from "./button";
+import { Direction } from "src/types/direction";
 
 describe("Кнопка рендерится без ошибок", () => {
   it("Кнопка c текстом", () => {
@@ -20,6 +21,26 @@ describe("Кнопка рендерится без ошибок", () => {
   });
   it("Кнопка с индикацией загрузки", () => {
     const button = renderer.create(<Button isLoader={true} />);
+
+    expect(button).toMatchSnapshot();
+  });
+  it("Кнопка с индикацией сортировки по возрастанию", () => {
+    const button = renderer.create(<Button sorting={Direction.Ascending} text="По возрастанию"/>);
+
+    expect(button).toMatchSnapshot();
+  });
+  it("Кнопка с индикацией сортировки по убыванию", () => {
+    const button = renderer.create(<Button sorting={Direction.Descending} text="По убыванию"/>);
+
+    expect(button).toMatchSnapshot();
+  });
+  it("Маленька кпопка", () => {
+    const button = renderer.create(<Button linkedList="small"/>);
+
+    expect(button).toMatchSnapshot();
+  });
+  it("Большая кпопка", () => {
+    const button = renderer.create(<Button linkedList="big"/>);
 
     expect(button).toMatchSnapshot();
   });

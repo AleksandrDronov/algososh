@@ -1,3 +1,5 @@
+import { def, changing, modified } from "./constants";
+
 describe("page string works correctly", function () {
   beforeEach(function () {
     cy.visit("/recursion");
@@ -27,7 +29,7 @@ describe("page string works correctly", function () {
         expect($allCircle[start]).to.contain(letters[start]);
         expect($allCircle[start]).to.have.css(
           "border",
-          "4px solid rgb(0, 50, 255)"
+          def
         );
         start++;
       }
@@ -40,11 +42,11 @@ describe("page string works correctly", function () {
       while (start <= end) {
         expect($allCircle[start]).to.have.css(
           "border",
-          "4px solid rgb(210, 82, 225)"
+          changing
         );
         expect($allCircle[end]).to.have.css(
           "border",
-          "4px solid rgb(210, 82, 225)"
+          changing
         );
 
         await new Cypress.Promise((resolve) => setTimeout(resolve, 1000));
@@ -54,11 +56,11 @@ describe("page string works correctly", function () {
 
         expect($allCircle[start]).to.have.css(
           "border",
-          "4px solid rgb(127, 224, 81)"
+          modified
         );
         expect($allCircle[end]).to.have.css(
           "border",
-          "4px solid rgb(127, 224, 81)"
+          modified
         );
         start++;
         end--;

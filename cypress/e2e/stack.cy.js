@@ -1,3 +1,6 @@
+import { def, changing } from "./constants";
+
+
 describe("page stack works correctly", function () {
   beforeEach(function () {
     cy.visit("/stack");
@@ -24,14 +27,14 @@ describe("page stack works correctly", function () {
         expect($allCircle[i - 1]).to.contain(i);
         expect($allCircle[i - 1]).to.have.css(
           "border",
-          "4px solid rgb(210, 82, 225)"
+          changing
         );
 
         await new Cypress.Promise((resolve) => setTimeout(resolve, 500));
 
         expect($allCircle[i - 1]).to.have.css(
           "border",
-          "4px solid rgb(0, 50, 255)"
+          def
         );
       });
     }
@@ -55,7 +58,7 @@ describe("page stack works correctly", function () {
     cy.get("@allCircle").should(async ($allCircle) => {
       expect($allCircle[2]).to.have.css(
         "border",
-        "4px solid rgb(210, 82, 225)"
+        changing
       );
 
       await new Cypress.Promise((resolve) => setTimeout(resolve, 500));
