@@ -9,6 +9,7 @@
 ### Запуск проекта:
 
 1. Клонировать репозиторий.
+
 git clone git@github.com:AleksandrDronov/algososh.git
 
 2. Войти в папку проекта.
