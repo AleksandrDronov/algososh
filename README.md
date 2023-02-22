@@ -1,5 +1,7 @@
 # Визуализатор алгоритмов
 
+[ссылка](https://aleksandrdronov.github.io/algososh/)
+
 ### Используемые технологии:
 1. ReactJS
 2. TypeScript
