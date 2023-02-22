@@ -13,10 +13,13 @@
    git clone git@github.com:AleksandrDronov/algososh.git
 
 2. Войти в папку проекта.
-  cd algososh
+
+   cd algososh
 
 3. Установить зависимости.
-  npm install
+
+   npm install
 
 4. Запуск.
-  npm start
+
+   npm start
